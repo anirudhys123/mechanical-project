@@ -25,19 +25,19 @@ export default function HeatExchangerForm() {
 
   const [readings, setReadings] = useState([
     {
-      mh: 0.3051, mc: 0.19, Th_in: 68, Th_out: 64, Tc_in: 31, Tc_out: 34, cph: 4187,cpc: 4150,
+      mh: 0.3051, mc: 0.19, Th_in: 64, Th_out: 61, Tc_in: 31, Tc_out: 34.5, cph: 4187,cpc: 4150,
       mu_h: 0.001, rho_h: 985, k_h: 0.6513, pr_h: 3.02,
       mu_c: 0.000450, rho_c: 1105, k_c: 0.72, pr_c: 4.25
 
     },
     {
-      mh: 0.3051, mc: 0.21, Th_in: 67, Th_out: 63, Tc_in: 30, Tc_out: 34, cph: 4187, cpc: 4150,
+      mh: 0.3051, mc: 0.21, Th_in: 66, Th_out: 63, Tc_in: 34, Tc_out: 37.5, cph: 4187, cpc: 4150,
       mu_h: 0.001, rho_h: 985, k_h: 0.6513, pr_h: 3.02,
       mu_c: 0.000440, rho_c: 1105, k_c: 0.72, pr_c: 4.25
 
     },
     {
-      mh: 0.3051, mc: 0.23, Th_in: 68, Th_out: 64, Tc_in: 34, Tc_out: 38 , cph: 4187, cpc: 4150,
+      mh: 0.3051, mc: 0.23, Th_in: 65, Th_out: 62, Tc_in: 35, Tc_out: 39 , cph: 4187, cpc: 4150,
       mu_h: 0.001, rho_h: 985, k_h: 0.6513, pr_h: 3.02,
       mu_c: 0.000445, rho_c: 1105, k_c: 0.72, pr_c: 4.25
 
