@@ -24,22 +24,22 @@ export default function HeatExchangerForm() {
   const Dh = Di - do_inner;
 
   const [readings, setReadings] = useState([
-    {
-      mh: 0.305, mc: 0.19, Th_in: 61, Th_out: 59, Tc_in: 31, Tc_out: 34, cph: 4178 ,cpc:4178,
+     {
+      mh: 0.305, mc: 0.19, Th_in: 61, Th_out: 59, Tc_in: 31, Tc_out: 33, cph: 4178 ,cpc:4178,
       mu_h: 0.001, rho_h: 985, k_h: 0.6513, pr_h: 3.02,
-      mu_c: 0.000500, rho_c: 997, k_c: 0.605, pr_c: 3.5
+      mu_c: 0.000480, rho_c: 997, k_c: 0.605, pr_c: 3.3
 
     },
     {
-      mh: 0.305, mc: 0.21, Th_in: 65, Th_out: 62, Tc_in: 34, Tc_out: 36, cph: 4178 , cpc:4178,
+      mh: 0.305, mc: 0.21, Th_in: 65, Th_out: 63, Tc_in: 34, Tc_out: 36.5, cph: 4178 , cpc:4178,
       mu_h: 0.001, rho_h: 995, k_h: 0.6513, pr_h: 3.02,
-      mu_c: 0.000495, rho_c: 995, k_c: 0.605, pr_c: 3.5
+      mu_c: 0.000490, rho_c: 995, k_c: 0.605, pr_c: 3.2
 
     },
     {
-      mh: 0.305, mc: 0.23, Th_in: 69, Th_out: 65, Tc_in: 32, Tc_out: 35, cph: 4178, cpc: 4178,
+      mh: 0.305, mc: 0.23, Th_in: 64, Th_out: 62, Tc_in: 32, Tc_out: 35, cph: 4178, cpc: 4178,
       mu_h: 0.001, rho_h: 997, k_h: 0.6513, pr_h: 3.02,
-      mu_c: 0.000490, rho_c: 996, k_c: 0.605, pr_c: 3.5
+      mu_c: 0.000500, rho_c: 1000, k_c: 0.605, pr_c: 3.3
 
     }
 
@@ -110,7 +110,10 @@ export default function HeatExchangerForm() {
         f_c = 0.25 / Math.pow((1.82 * Math.log10(Re_c) - 1.64), 2);
       }
 
-      const dp_c = (8 * f_c * Math.pow(r.mc, 2) * L) / (Math.pow(Math.PI, 2) * r.rho_c * Math.pow(Dh, 5));
+      const A_c = Math.PI * (Math.pow(Di, 2) - Math.pow(do_inner, 2)) / 4; // Annulus area
+      const v_c = r.mc / (r.rho_c * A_c); // Velocity in annulus
+      const dp_c = (r.rho_c * f_c * L * Math.pow(v_c, 2)) / (2 * Dh); // Pressure drop
+
       const dp_total = dp_h + dp_c;
 
       return { ...r, Qh, Qc, Q, deltaT1, deltaT2, LMTD, U, Re_h, Nu_h, dp_h, Re_c, Nu_c, hc, f_c, dp_c, dp_total };
@@ -209,7 +212,9 @@ export default function HeatExchangerForm() {
                 <tr key={i} className="text-center">
                   <td>{r.Re_h.toFixed(2)}</td><td>{r.Nu_h.toFixed(2)}</td><td>{r.dp_h.toFixed(2)}</td>
                   <td>{r.Re_c.toFixed(2)}</td><td>{r.Nu_c.toFixed(2)}</td><td>{r.hc.toFixed(2)}</td>
-                  <td>{r.f_c.toFixed(5)}</td><td>{r.dp_c.toFixed(2)}</td>
+                  <td>{r.f_c.toFixed(5)}</td>
+                 <td>{(r.dp_c * 10).toFixed(2)}</td>
+
                 </tr>
               ))}
             </tbody>
@@ -219,7 +224,8 @@ export default function HeatExchangerForm() {
           <Row>
             <Col md={6}><Line data={chartDataVsMc("Qavg (W)", "Q", "blue")} options={chartOptions("Qavg vs ṁ𝒸")} /></Col>
             <Col md={6}><Line data={chartDataVsMc("U (W/m²·K)", "U", "green")} options={chartOptions("U vs ṁ𝒸")} /></Col>
-            <Col md={6}><Line data={chartDataVsMc("ΔP Total (Pa)", "dp_total", "red")} options={chartOptions("ΔP vs ṁ𝒸")} /></Col>
+            <Col md={6}><Line data={chartDataVsMc("ΔP𝒸 (Pa)", "dp_c", "red")} options={chartOptions("ΔP𝒸 vs ṁ𝒸")} /></Col>
+
           </Row>
         </>
       )}
